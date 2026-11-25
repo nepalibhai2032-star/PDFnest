@@ -49,8 +49,27 @@ button{background:#6841d9;color:white;border:0;padding:13px;border-radius:8px;wi
 <div class="tool" onclick="document.getElementById('rotatePanel').scrollIntoView({behavior:'smooth'})" style="cursor:pointer">
 🔄<h3>Rotate PDF</h3>
 </div>
-<div class="tool">🗑️<h3>Delete Pages</h3></div>
+<div class="tool" onclick="document.getElementById('deletePagesPanel').scrollIntoView({behavior:'smooth'})" style="cursor:pointer">
+🗑️<h3>Delete PDF Pages</h3>
+</div>
 <div class="tool">🔐<h3>Protect PDF</h3></div>
+</section>
+
+<section class="panel" id="deletePagesPanel">
+  <h2>Delete PDF Pages</h2>
+  <p>Upload a PDF and enter the page numbers to delete.</p>
+
+  <input type="file" id="deletePagesFile" accept=".pdf,application/pdf">
+
+  <input
+    type="text"
+    id="deletePageNumbers"
+    placeholder="Example: 2,4,5"
+  >
+
+  <button onclick="deletePDFPages()">Delete Pages</button>
+
+  <p id="deletePagesStatus"></p>
 </section>
 
 <section class="panel" id="rotatePanel">
@@ -454,6 +473,88 @@ async function rotatePDF() {
 
   } catch (error) {
     status.textContent = "Rotation failed: " + error.message;
+  }
+}
+
+async function deletePDFPages() {
+  const file = document.getElementById("deletePagesFile").files[0];
+  const input = document.getElementById("deletePageNumbers").value;
+  const status = document.getElementById("deletePagesStatus");
+
+  if (!file) {
+    status.textContent = "Please select a PDF file.";
+    return;
+  }
+
+  if (!input.trim()) {
+    status.textContent = "Enter page numbers to delete, e.g. 2,4,5";
+    return;
+  }
+
+  try {
+    status.textContent = "Processing PDF...";
+
+    const bytes = await file.arrayBuffer();
+    const pdf = await PDFLib.PDFDocument.load(bytes);
+
+    const totalPages = pdf.getPageCount();
+
+    const pagesToDelete = input
+      .split(",")
+      .map(n => Number(n.trim()));
+
+    if (
+      pagesToDelete.some(
+        n => !Number.isInteger(n) || n < 1 || n > totalPages
+      )
+    ) {
+      status.textContent =
+        "Invalid page number. This PDF has " + totalPages + " pages.";
+      return;
+    }
+
+    const uniquePages = [...new Set(pagesToDelete)];
+
+    if (uniquePages.length >= totalPages) {
+      status.textContent = "You cannot delete all pages.";
+      return;
+    }
+
+    const output = await PDFLib.PDFDocument.create();
+
+    const pagesToKeep = [];
+
+    for (let i = 0; i < totalPages; i++) {
+      if (!uniquePages.includes(i + 1)) {
+        pagesToKeep.push(i);
+      }
+    }
+
+    const copiedPages = await output.copyPages(pdf, pagesToKeep);
+
+    copiedPages.forEach(page => output.addPage(page));
+
+    const newBytes = await output.save();
+
+    const blob = new Blob([newBytes], {
+      type: "application/pdf"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "PDFNest-Pages-Deleted.pdf";
+    link.click();
+
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+
+    status.textContent =
+      "Pages deleted successfully! Remaining pages: " +
+      pagesToKeep.length;
+
+  } catch (error) {
+    status.textContent = "Failed: " + error.message;
   }
 }
 
