@@ -80,6 +80,56 @@ status.textContent='PDF merged successfully!';
 }catch(e){status.textContent='Error: '+e.message;}
 finally{button.disabled=input.files.length<2;}
 };
+async function splitPDF() {
+  const file = document.getElementById("splitFile").files[0];
+  const status = document.getElementById("splitStatus");
+  const result = document.getElementById("splitResult");
+
+  if (!file) {
+    status.textContent = "Please select a PDF file.";
+    return;
+  }
+
+  try {
+    status.textContent = "Splitting PDF...";
+    result.innerHTML = "";
+
+    const pdf = await PDFLib.PDFDocument.load(
+      await file.arrayBuffer()
+    );
+
+    const totalPages = pdf.getPageCount();
+
+    for (let i = 0; i < totalPages; i++) {
+      const newPdf = await PDFLib.PDFDocument.create();
+
+      const [page] = await newPdf.copyPages(pdf, [i]);
+      newPdf.addPage(page);
+
+      const bytes = await newPdf.save();
+
+      const blob = new Blob([bytes], {
+        type: "application/pdf"
+      });
+
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "PDFNest-Page-" + (i + 1) + ".pdf";
+      link.textContent = "Download Page " + (i + 1);
+
+      link.style.display = "block";
+      link.style.margin = "10px";
+
+      result.appendChild(link);
+    }
+
+    status.textContent = "PDF split successfully!";
+  } catch (error) {
+    status.textContent = "Error: " + error.message;
+  }
+}
 </script>
 </body>
 </html>
