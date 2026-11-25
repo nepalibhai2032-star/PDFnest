@@ -49,6 +49,18 @@ button{background:#6841d9;color:white;border:0;padding:13px;border-radius:8px;wi
 <div class="tool">🔐<h3>Protect PDF</h3></div>
 </section>
 
+<section class="panel" id="pdfJpgPanel">
+  <h2>PDF to JPG</h2>
+  <p>Convert PDF pages into JPG images.</p>
+
+  <input type="file" id="pdfJpgFile" accept=".pdf,application/pdf">
+
+  <button onclick="convertPDFtoJPG()">Convert to JPG</button>
+
+  <p id="pdfJpgStatus"></p>
+  <div id="pdfJpgResult"></div>
+</section>
+
 <section class="panel" id="compressPanel">
   <h2>Compress PDF</h2>
   <p>Select a PDF file to reduce its size.</p>
