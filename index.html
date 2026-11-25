@@ -46,9 +46,28 @@ button{background:#6841d9;color:white;border:0;padding:13px;border-radius:8px;wi
 <div class="tool" onclick="document.getElementById('jpgPdfPanel').scrollIntoView({behavior:'smooth'})" style="cursor:pointer">
 📷<h3>JPG to PDF</h3>
 </div>
-<div class="tool">🔄<h3>Rotate PDF</h3></div>
+<div class="tool" onclick="document.getElementById('rotatePanel').scrollIntoView({behavior:'smooth'})" style="cursor:pointer">
+🔄<h3>Rotate PDF</h3>
+</div>
 <div class="tool">🗑️<h3>Delete Pages</h3></div>
 <div class="tool">🔐<h3>Protect PDF</h3></div>
+</section>
+
+<section class="panel" id="rotatePanel">
+  <h2>Rotate PDF</h2>
+  <p>Select a PDF file and choose the rotation angle.</p>
+
+  <input type="file" id="rotateFile" accept=".pdf,application/pdf">
+
+  <select id="rotateAngle">
+    <option value="90">Rotate 90° clockwise</option>
+    <option value="180">Rotate 180°</option>
+    <option value="270">Rotate 270° clockwise</option>
+  </select>
+
+  <button onclick="rotatePDF()">Rotate PDF Now</button>
+
+  <p id="rotateStatus"></p>
 </section>
 
 <section class="panel" id="jpgPdfPanel">
@@ -386,6 +405,55 @@ async function convertJPGtoPDF() {
 
   } catch (error) {
     status.textContent = "Failed: " + error.message;
+  }
+}
+
+async function rotatePDF() {
+  const file = document.getElementById("rotateFile").files[0];
+  const angle = Number(document.getElementById("rotateAngle").value);
+  const status = document.getElementById("rotateStatus");
+
+  if (!file) {
+    status.textContent = "Please select a PDF file.";
+    return;
+  }
+
+  try {
+    status.textContent = "Rotating PDF...";
+
+    const bytes = await file.arrayBuffer();
+
+    const pdf = await PDFLib.PDFDocument.load(bytes);
+
+    const pages = pdf.getPages();
+
+    for (const page of pages) {
+      const currentAngle = page.getRotation().angle;
+
+      page.setRotation(
+        PDFLib.degrees((currentAngle + angle) % 360)
+      );
+    }
+
+    const rotatedBytes = await pdf.save();
+
+    const blob = new Blob([rotatedBytes], {
+      type: "application/pdf"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "PDFNest-Rotated.pdf";
+    link.click();
+
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+
+    status.textContent = "PDF rotated successfully!";
+
+  } catch (error) {
+    status.textContent = "Rotation failed: " + error.message;
   }
 }
 
