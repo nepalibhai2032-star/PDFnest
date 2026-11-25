@@ -52,7 +52,43 @@ button{background:#6841d9;color:white;border:0;padding:13px;border-radius:8px;wi
 <div class="tool" onclick="document.getElementById('deletePagesPanel').scrollIntoView({behavior:'smooth'})" style="cursor:pointer">
 🗑️<h3>Delete PDF Pages</h3>
 </div>
-<div class="tool">🔐<h3>Protect PDF</h3></div>
+
+<div class="tool" onclick="document.getElementById('protectPanel').scrollIntoView({behavior:'smooth'})" style="cursor:pointer">
+🔒<h3>Protect PDF</h3>
+</div>
+
+<div class="tool" onclick="document.getElementById('unlockPanel').scrollIntoView({behavior:'smooth'})" style="cursor:pointer">
+🔓<h3>Unlock PDF</h3>
+</div>
+
+</section>
+
+<section class="panel" id="protectPanel">
+  <h2>Protect PDF 🔒</h2>
+  <p>Upload a PDF and set a password.</p>
+
+  <input type="file" id="protectFile" accept=".pdf,application/pdf">
+
+  <input type="password" id="protectPassword" placeholder="Enter password">
+
+  <input type="password" id="protectConfirmPassword" placeholder="Confirm password">
+
+  <button onclick="protectPDF()">Protect PDF</button>
+
+  <p id="protectStatus"></p>
+</section>
+
+<section class="panel" id="unlockPanel">
+  <h2>Unlock PDF 🔓</h2>
+  <p>Upload a password-protected PDF and enter its password.</p>
+
+  <input type="file" id="unlockFile" accept=".pdf,application/pdf">
+
+  <input type="password" id="unlockPassword" placeholder="Enter current PDF password">
+
+  <button onclick="unlockPDF()">Unlock PDF</button>
+
+  <p id="unlockStatus"></p>
 </section>
 
 <section class="panel" id="deletePagesPanel">
