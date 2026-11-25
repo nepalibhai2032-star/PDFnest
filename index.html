@@ -47,6 +47,14 @@ button{background:#6841d9;color:white;border:0;padding:13px;border-radius:8px;wi
 <p id="status"></p>
 </section>
 <footer style="text-align:center;padding:20px">© 2026 PDFNest</footer>
+<section class="panel" id="splitPanel">
+<h2>Split PDF</h2>
+<p>Select a PDF file to split into separate pages.</p>
+<input type="file" id="splitFile" accept=".pdf,application/pdf">
+<button onclick="splitPDF()">Split PDF Now</button>
+<p id="splitStatus"></p>
+<div id="splitResult"></div>
+</section>
 <script>
 const input=document.getElementById('files');
 const button=document.getElementById('merge');
