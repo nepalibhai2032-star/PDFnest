@@ -594,6 +594,127 @@ async function deletePDFPages() {
   }
 }
 
+<script type="module">
+let pdfStudioPromise;
+
+async function getPDFStudio() {
+  if (!pdfStudioPromise) {
+    pdfStudioPromise = (async () => {
+      const { createPdfToolkit } = await import(
+        "https://esm.sh/pdfstudio@0.4.0"
+      );
+
+      return await createPdfToolkit({
+        wasmUrl:
+          "https://cdn.jsdelivr.net/npm/pdfstudio@0.4.0/dist/wasm/qpdf.wasm"
+      });
+    })();
+  }
+
+  return pdfStudioPromise;
+}
+
+function downloadPDF(bytes, filename) {
+  const blob = new Blob([bytes], {
+    type: "application/pdf"
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
+window.protectPDF = async function () {
+  const file = document.getElementById("protectFile").files[0];
+  const password = document.getElementById("protectPassword").value;
+  const confirmPassword =
+    document.getElementById("protectConfirmPassword").value;
+  const status = document.getElementById("protectStatus");
+
+  if (!file) {
+    status.textContent = "Please select a PDF file.";
+    return;
+  }
+
+  if (password.length < 6) {
+    status.textContent = "Password must be at least 6 characters.";
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    status.textContent = "Passwords do not match.";
+    return;
+  }
+
+  try {
+    status.textContent =
+      "Loading password protection engine...";
+
+    const pdf = await getPDFStudio();
+
+    status.textContent = "Protecting PDF...";
+
+    const lockedBytes = await pdf.lock(file, {
+      userPassword: password,
+      ownerPassword: password,
+      keyLength: 256
+    });
+
+    downloadPDF(lockedBytes, "PDFNest-Protected.pdf");
+
+    status.textContent =
+      "PDF protected successfully! Keep your password safe.";
+
+  } catch (error) {
+    status.textContent =
+      "Protect failed: " + error.message;
+  }
+};
+
+window.unlockPDF = async function () {
+  const file = document.getElementById("unlockFile").files[0];
+  const password = document.getElementById("unlockPassword").value;
+  const status = document.getElementById("unlockStatus");
+
+  if (!file) {
+    status.textContent = "Please select a PDF file.";
+    return;
+  }
+
+  if (!password) {
+    status.textContent = "Please enter the PDF password.";
+    return;
+  }
+
+  try {
+    status.textContent =
+      "Loading password removal engine...";
+
+    const pdf = await getPDFStudio();
+
+    status.textContent = "Unlocking PDF...";
+
+    const unlockedBytes = await pdf.unlock(file, {
+      password: password
+    });
+
+    downloadPDF(unlockedBytes, "PDFNest-Unlocked.pdf");
+
+    status.textContent =
+      "PDF unlocked successfully!";
+
+  } catch (error) {
+    status.textContent =
+      "Unlock failed. Check your password or PDF file.";
+  }
+};
+</script>
+
 </script>
 </body>
 </html>
