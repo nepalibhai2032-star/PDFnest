@@ -1,1 +1,73 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDFNest - Free PDF Tools</title>
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+<style>
+body{font-family:Arial;background:#f5f4ff;margin:0;color:#222}
+header{background:#fff;padding:20px;color:#6841d9;font-size:25px;font-weight:bold}
+.hero{text-align:center;padding:40px 15px;background:#eae5ff}
+.hero h1{font-size:32px}
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:20px}
+.tool,.panel{background:white;padding:20px;border-radius:14px;text-align:center}
+.panel{margin:20px}
+button{background:#6841d9;color:white;border:0;padding:13px;border-radius:8px;width:100%;margin-top:15px}
+#status{color:#6841d9;text-align:center}
+</style>
+</head>
+<body>
+<header>📄 PDFNest</header>
+<section class="hero">
+<h1>All Your PDF Tools in One Place</h1>
+<p>Free and easy PDF tools for everyone.</p>
+</section>
+<section class="tools">
+<div class="tool">📑<h3>Merge PDF</h3></div>
+<div class="tool">✂️<h3>Split PDF</h3></div>
+<div class="tool">📦<h3>Compress PDF</h3></div>
+<div class="tool">🖼️<h3>PDF to JPG</h3></div>
+<div class="tool">📸<h3>JPG to PDF</h3></div>
+<div class="tool">🔄<h3>Rotate PDF</h3></div>
+<div class="tool">🗑️<h3>Delete Pages</h3></div>
+<div class="tool">🔐<h3>Protect PDF</h3></div>
+</section>
+<section class="panel">
+<h2>Merge PDF Files</h2>
+<p>Select at least two PDF files.</p>
+<input type="file" id="files" accept=".pdf,application/pdf" multiple>
+<button id="merge" disabled>Merge PDF Now</button>
+<p id="status"></p>
+</section>
+<footer style="text-align:center;padding:20px">© 2026 PDFNest</footer>
+<script>
+const input=document.getElementById('files');
+const button=document.getElementById('merge');
+const status=document.getElementById('status');
+button.disabled=true;
+input.onchange=()=>{button.disabled=input.files.length<2;status.textContent=input.files.length+' files selected';};
+button.onclick=async()=>{
+button.disabled=true;
+status.textContent='Please wait...';
+try{
+const output=await PDFLib.PDFDocument.create();
+for(const file of input.files){
+const pdf=await PDFLib.PDFDocument.load(await file.arrayBuffer());
+const pages=await output.copyPages(pdf,pdf.getPageIndices());
+pages.forEach(p=>output.addPage(p));
+}
+const bytes=await output.save();
+const url=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));
+const a=document.createElement('a');
+a.href=url;a.download='PDFNest-Merged.pdf';a.click();
+setTimeout(()=>URL.revokeObjectURL(url),60000);
+status.textContent='PDF merged successfully!';
+}catch(e){status.textContent='Error: '+e.message;}
+finally{button.disabled=input.files.length<2;}
+};
+</script>
+</body>
+</html>
+
