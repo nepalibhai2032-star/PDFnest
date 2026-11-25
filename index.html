@@ -148,6 +148,91 @@ async function splitPDF() {
     status.textContent = "Error: " + error.message;
   }
 }
+
+async function compressPDF() {
+  const file = document.getElementById("compressFile").files[0];
+  const status = document.getElementById("compressStatus");
+
+  if (!file) {
+    status.textContent = "Please select a PDF file.";
+    return;
+  }
+
+  try {
+    status.textContent = "Compressing PDF... Please wait.";
+
+    const data = await file.arrayBuffer();
+
+    const pdf = await pdfjsLib.getDocument({
+      data: new Uint8Array(data)
+    }).promise;
+
+    const output = await PDFLib.PDFDocument.create();
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+
+      const viewport = page.getViewport({ scale: 1.2 });
+
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      await page.render({
+        canvasContext: context,
+        viewport: viewport
+      }).promise;
+
+      const imageData = canvas.toDataURL("image/jpeg", 0.65);
+
+      const imageBytes = await fetch(imageData).then(r => r.arrayBuffer());
+
+      const image = await output.embedJpg(imageBytes);
+
+      const newPage = output.addPage([
+        viewport.width,
+        viewport.height
+      ]);
+
+      newPage.drawImage(image, {
+        x: 0,
+        y: 0,
+        width: viewport.width,
+        height: viewport.height
+      });
+
+      canvas.width = 0;
+      canvas.height = 0;
+    }
+
+    const compressedBytes = await output.save();
+
+    const blob = new Blob([compressedBytes], {
+      type: "application/pdf"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "PDFNest-Compressed.pdf";
+    link.click();
+
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+
+    const originalSize = (file.size / 1024).toFixed(1);
+    const newSize = (blob.size / 1024).toFixed(1);
+
+    status.textContent =
+      "Original: " + originalSize + " KB | Compressed: " + newSize + " KB";
+
+  } catch (error) {
+    status.textContent = "Compression failed: " + error.message;
+  }
+}
+
 </script>
 </body>
 </html>
