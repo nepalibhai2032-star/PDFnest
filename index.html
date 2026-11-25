@@ -159,11 +159,25 @@ button{background:#6841d9;color:white;border:0;padding:13px;border-radius:8px;wi
   <p id="compressStatus"></p>
 </section>
 
-<h2>Merge PDF Files</h2>
-<p>Select at least two PDF files.</p>
-<input type="file" id="files" accept=".pdf,application/pdf" multiple>
-<button id="merge" disabled>Merge PDF Now</button>
-<p id="status"></p>
+
+<section class="panel" id="mergePanel">
+  <h2>Merge PDF Files</h2>
+  <p>Select at least two PDF files.</p>
+
+  <input
+    type="file"
+    id="files"
+    accept=".pdf,application/pdf"
+    multiple
+  >
+
+  <button id="merge" disabled>
+    Merge PDF Now
+  </button>
+
+  <p id="status"></p>
+</section>
+
 </section>
 <footer style="text-align:center;padding:20px">© 2026 PDFNest</footer>
 <section class="panel" id="splitPanel">
