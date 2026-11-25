@@ -51,6 +51,17 @@ button{background:#6841d9;color:white;border:0;padding:13px;border-radius:8px;wi
 <div class="tool">🔐<h3>Protect PDF</h3></div>
 </section>
 
+<section class="panel" id="jpgPdfPanel">
+  <h2>JPG to PDF</h2>
+  <p>Select images to create a PDF.</p>
+
+  <input type="file" id="jpgPdfFiles" accept="image/jpeg,image/png" multiple>
+
+  <button onclick="convertJPGtoPDF()">Create PDF</button>
+
+  <p id="jpgPdfStatus"></p>
+</section>
+
 <section class="panel" id="pdfJpgPanel">
   <h2>PDF to JPG</h2>
   <p>Convert PDF pages into JPG images.</p>
