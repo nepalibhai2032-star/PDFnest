@@ -247,6 +247,73 @@ async function compressPDF() {
   }
 }
 
+async function convertPDFtoJPG() {
+  const file = document.getElementById("pdfJpgFile").files[0];
+  const status = document.getElementById("pdfJpgStatus");
+  const result = document.getElementById("pdfJpgResult");
+
+  if (!file) {
+    status.textContent = "Please select a PDF file.";
+    return;
+  }
+
+  try {
+    status.textContent = "Converting PDF pages...";
+    result.innerHTML = "";
+
+    const data = await file.arrayBuffer();
+
+    const pdf = await pdfjsLib.getDocument({
+      data: new Uint8Array(data)
+    }).promise;
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+
+      const viewport = page.getViewport({ scale: 1.5 });
+
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      await page.render({
+        canvasContext: context,
+        viewport: viewport
+      }).promise;
+
+      const blob = await new Promise(resolve => {
+        canvas.toBlob(resolve, "image/jpeg", 0.90);
+      });
+
+      if (!blob) {
+        throw new Error("Could not create JPG image.");
+      }
+
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "PDFNest-Page-" + i + ".jpg";
+      link.textContent = "Download JPG Page " + i;
+
+      link.style.display = "block";
+      link.style.margin = "12px";
+
+      result.appendChild(link);
+
+      canvas.width = 0;
+      canvas.height = 0;
+    }
+
+    status.textContent = "PDF converted successfully!";
+
+  } catch (error) {
+    status.textContent = "Conversion failed: " + error.message;
+  }
+}
+
 </script>
 </body>
 </html>
