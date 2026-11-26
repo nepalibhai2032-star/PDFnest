@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>PDFNest - Free Online PDF & Image Tools</title>
+<meta name="description" content="PDFNest offers free online PDF and image tools. Merge, split, compress, convert, rotate and manage your files easily.">
+<meta name="google-site-verification" content="6l0yld0YPkCTH9DxcQz4Y7ZxRvWK1P6ekXzRfLHBHYI">
+<link rel="canonical" href="https://pdfnest.nepalibhai2032.workers.dev/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#6d28d9">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PDFNest">
+<meta property="og:title" content="PDFNest - Free Online PDF & Image Tools">
+<meta property="og:description" content="Merge, split, compress and convert PDF and image files online.">
+<meta property="og:url" content="https://pdfnest.nepalibhai2032.workers.dev/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PDFNest - Free Online Tools">
+<meta name="twitter:description" content="Free online PDF and image tools.">
+
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"PDFNest",
+  "url":"https://pdfnest.nepalibhai2032.workers.dev/",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "description":"Free online PDF and image tools."
+}
+</script>
+
+<style>
+:root{
+ --purple:#7028e4;--purple2:#9b5cff;--dark:#241044;
+ --bg:#f7f5ff;--card:#fff;--text:#211936;
+ --muted:#716a82;--border:#e8e1f5;
+ --shadow:0 12px 35px rgba(65,25,120,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);
+ color:var(--text);transition:.2s;
+}
+body.dark{
+ --bg:#100b1d;--card:#1c1430;--text:#f5efff;
+ --muted:#b6a9cc;--border:#382850;
+ --shadow:0 12px 35px rgba(0,0,0,.25);
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{
+ position:sticky;top:0;z-index:20;background:var(--card);
+ border-bottom:1px solid var(--border);
+ padding:13px 5%;display:flex;align-items:center;
+ justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.logo{font-size:25px;font-weight:900;color:var(--purple)}
+.logo span{color:var(--text)}
+.nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.nav a,.nav button{
+ color:var(--text);text-decoration:none;background:transparent;
+ border:0;padding:9px 11px;border-radius:9px;font-weight:700;
+}
+.nav a:hover,.nav button:hover{background:var(--bg);color:var(--purple)}
+.hero{
+ padding:65px 18px 48px;text-align:center;color:white;
+ background:radial-gradient(circle at 20% 10%,#b88aff 0,transparent 35%),
+ linear-gradient(130deg,#42118e,#7028e4 55%,#a34dff);
+}
+.hero .tag{
+ display:inline-block;border:1px solid #ffffff65;
+ padding:7px 14px;border-radius:30px;font-size:12px;
+ font-weight:800;letter-spacing:1px;background:#ffffff18;
+}
+.hero h1{font-size:clamp(32px,6vw,58px);margin:18px 0 12px;font-weight:950}
+.hero p{max-width:650px;margin:0 auto 25px;color:#f0e6ff;line-height:1.6}
+.search{
+ max-width:620px;margin:auto;display:flex;background:white;
+ border-radius:15px;padding:6px;box-shadow:0 10px 35px #26005255;
+}
+.search input{border:0;outline:0;flex:1;min-width:0;padding:13px;color:#241044;background:white}
+.search button,.primary{
+ background:linear-gradient(135deg,var(--purple),var(--purple2));
+ color:white;border:0;border-radius:11px;padding:13px 20px;font-weight:800;
+}
+.section{max-width:1150px;margin:36px auto;padding:0 18px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:10px;flex-wrap:wrap}
+.section h2{font-size:27px;margin:0 0 8px}
+.section-head p{color:var(--muted);margin:0 0 18px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.filter{
+ border:1px solid var(--border);background:var(--card);
+ color:var(--text);padding:9px 14px;border-radius:30px;font-weight:700;
+}
+.filter.active{background:var(--purple);color:white;border-color:var(--purple)}
+.tools{
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:15px;
+}
+.tool{
+ background:var(--card);border:1px solid var(--border);border-radius:17px;
+ padding:20px 14px;text-align:left;box-shadow:var(--shadow);
+ cursor:pointer;transition:.2s;min-height:135px;
+}
+.tool:hover{transform:translateY(-5px);border-color:var(--purple)}
+.tool .emoji{font-size:29px}
+.tool h3{font-size:15px;margin:13px 0 5px}
+.tool small{color:var(--muted)}
+.tool .soon{color:#d97706;font-weight:800}
+.panel{
+ display:none;max-width:850px;margin:25px auto;padding:25px;
+ background:var(--card);border:1px solid var(--border);
+ border-radius:18px;box-shadow:var(--shadow);scroll-margin-top:90px;
+}
+.panel.active{display:block}
+.panel h2{margin-top:0;color:var(--purple)}
+.panel p{color:var(--muted);line-height:1.6}
+.panel input[type=file],.panel input[type=text],.panel input[type=password],
+.panel select,.panel textarea{
+ width:100%;padding:13px;margin:10px 0;border:1px solid var(--border);
+ border-radius:10px;background:var(--bg);color:var(--text);
+}
+.panel button{width:100%;margin-top:10px}
+.status{min-height:22px;color:var(--purple);overflow-wrap:anywhere;font-weight:700}
+.downloads a{display:block;color:var(--purple);margin:12px 0;overflow-wrap:anywhere}
+.note{font-size:12px;color:var(--muted)}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.feature,.legal-card{
+ background:var(--card);padding:22px;border:1px solid var(--border);
+ border-radius:16px;box-shadow:var(--shadow);
+}
+.feature h3{margin-top:0;color:var(--purple)}
+.premium{
+ background:linear-gradient(135deg,#28104d,#7028e4);
+ color:white;border-radius:22px;padding:30px;
+}
+.premium p{color:#e6d7ff}
+.premium .primary{background:white;color:#5b21b6}
+.premium-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.premium-item{background:#ffffff16;border:1px solid #ffffff30;padding:13px;border-radius:12px}
+.badge{font-size:11px;padding:5px 8px;border-radius:20px;font-weight:900}
+.badge.soon{background:#fff1c2;color:#805400}
+.badge.active{background:#dcfce7;color:#166534}
+.legal{display:none}
+.legal.active{display:block}
+.legal-card{line-height:1.7}
+.legal-card h3{color:var(--purple)}
+footer{
+ margin-top:45px;background:#1e1035;color:#e8dcff;
+ padding:35px 18px;text-align:center;
+}
+footer a{color:#d8bfff;text-decoration:none;margin:7px;display:inline-block}
+footer p{color:#c3b5d8;font-size:13px}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+ background:#241044;color:white;padding:12px 18px;border-radius:10px;
+ display:none;z-index:99;max-width:90%;text-align:center}
+@media(max-width:600px){
+ header{padding:12px 4%}.nav{width:100%;justify-content:center}
+ .nav a,.nav button{font-size:12px;padding:7px}
+ .hero{padding:48px 14px 38px}.tools{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .tool{padding:16px 12px}.panel{margin:15px 12px;padding:19px}
+ .search button{padding:12px}
+}
+</style>
+</head>
+
+<body>
+<header>
+ <div class="logo">📄 PDF<span>Nest</span></div>
+ <nav class="nav">
+  <a href="#home">Home</a>
+  <a href="#pdf-tools">PDF Tools</a>
+  <a href="#image-tools">Image Tools</a>
+  <a href="#premium">Premium</a>
+  <select id="language" aria-label="Language" style="padding:8px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--text)">
+   <option value="en">English</option><option value="hi">हिन्दी</option>
+   <option value="es">Español</option><option value="fr">Français</option>
+   <option value="de">Deutsch</option><option value="pt">Português</option>
+   <option value="ar">العربية</option><option value="zh">中文</option>
+   <option value="ja">日本語</option><option value="bn">বাংলা</option>
+  </select>
+  <button id="themeBtn" type="button">🌙</button>
+ </nav>
+</header>
+
+<main id="home">
+<section class="hero">
+ <span class="tag">SMART • SIMPLE • SECURE</span>
+ <h1 id="heroTitle">All Your PDF Needs. One Place.</h1>
+ <p id="heroDesc">Powerful PDF and image tools to manage your documents easily. Fast, simple and browser-based wherever supported.</p>
+ <div class="search">
+  <input id="toolSearch" type="text" placeholder="Search PDF or Image Tools...">
+  <button onclick="searchTools()">Search</button>
+ </div>
+</section>
+
+<section class="section" id="pdf-tools">
+ <div class="section-head">
+  <div><h2>PDF Tools</h2><p>Manage your PDF files with simple online tools.</p></div>
+ </div>
+ <div class="filters">
+  <button class="filter active" onclick="filterTools('all',this)">All Tools</button>
+  <button class="filter" onclick="filterTools('pdf',this)">PDF Tools</button>
+  <button class="filter" onclick="filterTools('image',this)">Image Tools</button>
+  <button class="filter" onclick="filterTools('premium',this)">Premium</button>
+ </div>
+ <div class="tools" id="toolGrid">
+  <div class="tool" data-category="pdf" onclick="openTool('mergePanel')"><div class="emoji">📑</div><h3>Merge PDF</h3><small>Combine PDF files</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('splitPanel')"><div class="emoji">✂️</div><h3>Split PDF</h3><small>Separate pages</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('compressPanel')"><div class="emoji">📦</div><h3>Compress PDF</h3><small>Reduce file size</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('pdfJpgPanel')"><div class="emoji">🖼️</div><h3>PDF to JPG</h3><small>Convert pages to images</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('jpgPdfPanel')"><div class="emoji">📷</div><h3>JPG to PDF</h3><small>Create PDF from images</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('rotatePanel')"><div class="emoji">🔄</div><h3>Rotate PDF</h3><small>Rotate PDF pages</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('deletePanel')"><div class="emoji">🗑️</div><h3>Delete Pages</h3><small>Remove selected pages</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('extractPanel')"><div class="emoji">📤</div><h3>Extract Pages</h3><small>Save selected pages</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('rearrangePanel')"><div class="emoji">🔀</div><h3>Rearrange Pages</h3><small>Change page order</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('numbersPanel')"><div class="emoji">🔢</div><h3>Page Numbers</h3><small>Add page numbers</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('watermarkPanel')"><div class="emoji">💧</div><h3>Watermark</h3><small>Add text watermark</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('protectPanel')"><div class="emoji">🔒</div><h3>Protect PDF</h3><small class="soon">Coming Soon</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('unlockPanel')"><div class="emoji">🔓</div><h3>Unlock PDF</h3><small class="soon">Coming Soon</small></div>
+ </div>
+</section>
+
+<section class="section" id="image-tools">
+ <div class="section-head"><div><h2>Image Tools</h2><p>Resize and compress your images in your browser.</p></div></div>
+ <div class="tools">
+  <div class="tool" onclick="openTool('resizePanel')"><div class="emoji">📐</div><h3>Image Resize</h3><small>Change image dimensions</small></div>
+  <div class="tool" onclick="openTool('imageCompressPanel')"><div class="emoji">🗜️</div><h3>Image Compress</h3><small>Reduce JPG file size</small></div>
+ </div>
+</section>
+
+<section class="section" id="premium">
+ <div class="premium">
+  <span class="badge soon">PREMIUM • COMING SOON</span>
+  <h2>Unlock More Power with PDFNest Premium</h2>
+  <p>Each Premium Tool is planned to include 2 free trial uses. Subscription and secure account features will be introduced later.</p>
+  <div class="premium-list">
+   <div class="premium-item">📄 PDF to Word / Excel / PPT <span class="badge soon">Soon</span></div>
+   <div class="premium-item">🔍 OCR PDF <span class="badge soon">Soon</span></div>
+   <div class="premium-item">✨ AI Image Enhancer <span class="badge soon">Soon</span></div>
+   <div class="premium-item">🚀 Image Upscaler 2x / 4x <span class="badge soon">Soon</span></div>
+   <div class="premium-item">✂️ Background Remover <span class="badge soon">Soon</span></div>
+   <div class="premium-item">📝 Image Text Editor <span class="badge soon">Soon</span></div>
+   <div class="premium-item">🛠️ Advanced PDF Editor <span class="badge soon">Soon</span></div>
+   <div class="premium-item">📚 Batch Processing <span class="badge soon">Soon</span></div>
+  </div>
+  <p><strong>Payment System:</strong> Coming Soon</p>
+  <button class="primary" onclick="toast('Premium subscriptions will be available in a future update.')" type="button">Explore Premium – Coming Soon</button>
+ </div>
+</section>
+
+<section class="section">
+ <div class="feature-grid">
+  <div class="feature"><h3>🔐 Browser Processing</h3><p>Your selected files are processed in your browser for supported tools. Keep your files safe and use a trusted device.</p></div>
+  <div class="feature"><h3>⚡ Simple Experience</h3><p>Easy tools, clear instructions and a mobile-friendly interface.</p></div>
+  <div class="feature"><h3>🌍 Made for Everyone</h3><p>PDFNest is designed to be accessible on mobile, tablet and desktop devices.</p></div>
+ </div>
+</section>
+
+<!-- PDF TOOL PANELS -->
+<section class="panel" id="mergePanel">
+ <h2>Merge PDF</h2><p>Select two or more PDF files. The selected order is used.</p>
+ <input type="file" id="mergeFiles" accept=".pdf,application/pdf" multiple>
+ <button class="primary" onclick="mergePDF()">Merge PDF</button><div class="status" id="mergeStatus"></div>
+</section>
+
+<section class="panel" id="splitPanel">
+ <h2>Split PDF</h2><p>Creates one PDF for each page.</p>
+ <input type="file" id="splitFile" accept=".pdf,application/pdf">
+ <button class="primary" onclick="splitPDF()">Split PDF</button><div class="status" id="splitStatus"></div><div class="downloads" id="splitResult"></div>
+</section>
+
+<section class="panel" id="compressPanel">
+ <h2>Compress PDF</h2><p>Note: this method converts pages into images. Text will no longer be selectable and visual quality may change.</p>
+ <input type="file" id="compressFile" accept=".pdf,application/pdf">
+ <select id="compressQuality"><option value=".75">Balanced quality</option><option value=".55">Smaller file</option><option value=".9">Higher quality</option></select>
+ <button class="primary" onclick="compressPDF()">Compress PDF</button><div class="status" id="compressStatus"></div>
+</section>
+
+<section class="panel" id="pdfJpgPanel">
+ <h2>PDF to JPG</h2><p>Convert every PDF page to a JPG image.</p>
+ <input type="file" id="pdfJpgFile" accept=".pdf,application/pdf">
+ <button class="primary" onclick="pdfToJpg()">Convert to JPG</button><div class="status" id="pdfJpgStatus"></div><div class="downloads" id="pdfJpgResult"></div>
+</section>
+
+<section class="panel" id="jpgPdfPanel">
+ <h2>JPG to PDF</h2><p>Select JPG or PNG images to create a PDF.</p>
+ <input type="file" id="jpgPdfFiles" accept="image/jpeg,image/png,.jpg,.jpeg,.png" multiple>
+ <button class="primary" onclick="jpgToPdf()">Create PDF</button><div class="status" id="jpgPdfStatus"></div>
+</section>
+
+<section class="panel" id="rotatePanel">
+ <h2>Rotate PDF</h2><input type="file" id="rotateFile" accept=".pdf,application/pdf">
+ <select id="rotateAngle"><option value="90">90° clockwise</option><option value="180">180°</option><option value="270">270° clockwise</option></select>
+ <button class="primary" onclick="rotatePDF()">Rotate PDF</button><div class="status" id="rotateStatus"></div>
+</section>
+
+<section class="panel" id="deletePanel">
+ <h2>Delete PDF Pages</h2><p>Enter page numbers separated by commas, for example 2,4,5.</p>
+ <input type="file" id="deleteFile" accept=".pdf,application/pdf">
+ <input type="text" id="deleteNumbers" placeholder="Example: 2,4,5">
+ <button class="primary" onclick="deletePages()">Delete Pages</button><div class="status" id="deleteStatus"></div>
+</section>
+
+<section class="panel" id="extractPanel">
+ <h2>Extract PDF Pages</h2><p>Enter the page numbers you want to keep, e.g. 1,3,5.</p>
+ <input type="file" id="extractFile" accept=".pdf,application/pdf">
+ <input type="text" id="extractNumbers" placeholder="Example: 1,3,5">
+ <button class="primary" onclick="extractPages()">Extract Pages</button><div class="status" id="extractStatus"></div>
+</section>
+
+<section class="panel" id="rearrangePanel">
+ <h2>Rearrange PDF Pages</h2><p>Enter all page numbers in the new order, e.g. 3,1,2.</p>
+ <input type="file" id="rearrangeFile" accept=".pdf,application/pdf">
+ <input type="text" id="rearrangeNumbers" placeholder="Example: 3,1,2">
+ <button class="primary" onclick="rearrangePages()">Rearrange Pages</button><div class="status" id="rearrangeStatus"></div>
+</section>
+
+<section class="panel" id="numbersPanel">
+ <h2>Add Page Numbers</h2><input type="file" id="numbersFile" accept=".pdf,application/pdf">
+ <button class="primary" onclick="addPageNumbers()">Add Page Numbers</button><div class="status" id="numbersStatus"></div>
+</section>
+
+<section class="panel" id="watermarkPanel">
+ <h2>Add Watermark</h2><input type="file" id="watermarkFile" accept=".pdf,application/pdf">
+ <input type="text" id="watermarkText" placeholder="Enter watermark text">
+ <button class="primary" onclick="addWatermark()">Add Watermark</button><div class="status" id="watermarkStatus"></div>
+</section>
+
+<section class="panel" id="protectPanel">
+ <h2>Protect PDF 🔒</h2><p class="note">This feature is not active yet. A compatible secure PDF encryption engine is required.</p>
+ <span class="badge soon">Coming Soon</span>
+</section>
+<section class="panel" id="unlockPanel">
+ <h2>Unlock PDF 🔓</h2><p class="note">This feature is not active yet. Only unlock PDFs you are authorized to access.</p>
+ <span class="badge soon">Coming Soon</span>
+</section>
+
+<!-- IMAGE PANELS -->
+<section class="panel" id="resizePanel">
+ <h2>Image Resize</h2><input type="file" id="resizeFile" accept="image/*">
+ <input type="number" id="resizeWidth" placeholder="New width in pixels" min="1">
+ <input type="number" id="resizeHeight" placeholder="New height in pixels" min="1">
+ <button class="primary" onclick="resizeImage()">Resize Image</button><div class="status" id="resizeStatus"></div>
+</section>
+<section class="panel" id="imageCompressPanel">
+ <h2>Image Compress</h2><p>Compress JPG images in your browser.</p>
+ <input type="file" id="imageCompressFile" accept="image/jpeg,.jpg,.jpeg">
+ <select id="imageQuality"><option value=".7">Balanced</option><option value=".45">Smaller file</option><option value=".88">Higher quality</option></select>
+ <button class="primary" onclick="compressImage()">Compress Image</button><div class="status" id="imageCompressStatus"></div>
+</section>
+
+<!-- LEGAL PAGES -->
+<section class="section legal" id="privacy">
+ <div class="legal-card">
+  <h2>Privacy Policy</h2>
+  <p><strong>Last updated: 26 November 2026</strong></p>
+  <p>PDFNest respects your privacy. This policy explains how information may be handled when you use this website.</p>
+  <h3>1. File Processing</h3>
+  <p>Supported PDF and image tools process selected files locally in your browser. These files are not intentionally uploaded to a PDFNest server by those browser-based tools. Your browser and device remain responsible for local processing and temporary data.</p>
+  <h3>2. Information</h3>
+  <p>PDFNest may receive information you voluntarily send through our contact email. Basic technical information may be processed by the hosting provider to operate and secure the website.</p>
+  <h3>3. Cookies, Ads and Analytics</h3>
+  <p>Cookies, advertising services or analytics may be introduced in the future. If enabled, this policy will be updated to explain relevant providers and ch
