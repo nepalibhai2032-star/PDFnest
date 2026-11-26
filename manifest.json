@@ -1,0 +1,14 @@
+
+{
+  "id": "/",
+  "name": "PDFNest - PDF & Image Tools",
+  "short_name": "PDFNest",
+  "description": "All-in-one PDF and Image Tools",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f4ff",
+  "theme_color": "#6841d9",
+  "lang": "en-IN"
+}
