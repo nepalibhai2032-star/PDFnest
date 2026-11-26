@@ -1,0 +1,344 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDFNest - Free PDF & Image Tools</title>
+<meta name="description" content="PDFNest free online PDF and image tools. Merge, split, compress, convert and manage files easily.">
+<meta name="google-site-verification" content="6l0yld0YPkCTH9DxcQz4Y7ZxRvWK1P6ekXzRfLHBHYI">
+<link rel="canonical" href="https://pdfnest.nepalibhai2032.workers.dev/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#7028e4">
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+:root{--purple:#7028e4;--purple2:#a45cff;--bg:#f7f5ff;--card:#fff;--text:#211936;--muted:#716a82;--border:#e8e1f5;--shadow:0 10px 30px #42118e12}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+body.dark{--bg:#100b1d;--card:#1c1430;--text:#f5efff;--muted:#b6a9cc;--border:#382850;--shadow:0 10px 30px #0004}
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--border);padding:13px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:900;color:var(--purple)}
+.logo span{color:var(--text)}
+.nav{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.nav a,.nav button{border:0;background:transparent;color:var(--text);text-decoration:none;padding:9px;border-radius:9px;font-weight:bold}
+.nav select{padding:9px;border-radius:9px;background:var(--card);color:var(--text);border:1px solid var(--border)}
+.hero{padding:60px 18px;text-align:center;color:white;background:radial-gradient(circle at 20% 10%,#b88aff,transparent 35%),linear-gradient(130deg,#42118e,#7028e4 55%,#a34dff)}
+.tag{display:inline-block;padding:7px 14px;border:1px solid #ffffff66;border-radius:30px;background:#ffffff18;font-size:12px;font-weight:bold}
+.hero h1{font-size:clamp(32px,6vw,58px);margin:20px 0 12px}
+.hero p{max-width:650px;margin:0 auto 24px;line-height:1.6;color:#f0e6ff}
+.search{max-width:620px;margin:auto;display:flex;background:white;border-radius:13px;padding:6px}
+.search input{flex:1;min-width:0;border:0;outline:0;padding:12px;color:#241044}
+.search button,.primary{background:linear-gradient(135deg,var(--purple),var(--purple2));color:white;border:0;border-radius:10px;padding:12px 18px;font-weight:bold}
+.section{max-width:1150px;margin:35px auto;padding:0 18px}
+.section h2{margin-bottom:8px}
+.section p{color:var(--muted);line-height:1.6}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.filter{padding:9px 14px;border:1px solid var(--border);border-radius:30px;background:var(--card);color:var(--text);font-weight:bold}
+.filter.active{background:var(--purple);color:white}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px}
+.tool{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 14px;text-align:left;box-shadow:var(--shadow);min-height:130px;cursor:pointer;transition:.2s;color:var(--text)}
+.tool:hover{transform:translateY(-4px);border-color:var(--purple)}
+.tool .emoji{font-size:28px}
+.tool h3{font-size:15px;margin:12px 0 5px}
+.tool small{color:var(--muted)}
+.soon{color:#d97706;font-weight:bold}
+.panel{display:none;max-width:850px;margin:22px auto;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:17px;box-shadow:var(--shadow);scroll-margin-top:90px}
+.panel.active{display:block}
+.panel h2{color:var(--purple);margin-top:0}
+.panel input[type=file],.panel input[type=text],.panel input[type=number],.panel select{width:100%;padding:12px;margin:9px 0;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text)}
+.panel button{width:100%;margin-top:10px}
+.status{min-height:22px;margin-top:12px;color:var(--purple);font-weight:bold;overflow-wrap:anywhere}
+.downloads a{display:block;color:var(--purple);margin:12px 0}
+.note{font-size:12px;color:var(--muted)}
+.premium{background:linear-gradient(135deg,#28104d,#7028e4);color:white;border-radius:20px;padding:28px}
+.premium p{color:#e6d7ff}
+.premium-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.premium-item{background:#ffffff18;padding:13px;border-radius:10px}
+footer{margin-top:45px;background:#1e1035;color:#e8dcff;padding:30px 18px;text-align:center}
+footer a{color:#d8bfff;margin:7px;display:inline-block}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#241044;color:white;padding:12px 18px;border-radius:10px;display:none;z-index:99;max-width:90%}
+@media(max-width:600px){header{padding:12px 4%}.nav{width:100%;justify-content:center}.nav a,.nav button{font-size:12px;padding:7px}.hero{padding:45px 14px}.tools{grid-template-columns:repeat(2,minmax(0,1fr))}.tool{padding:15px 11px}.panel{margin:14px 12px;padding:18px}.search button{padding:11px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">📄 PDF<span>Nest</span></div>
+ <nav class="nav">
+  <a href="#home" data-t="home">Home</a>
+  <a href="#pdf-tools" data-t="pdfTools">PDF Tools</a>
+  <a href="#image-tools" data-t="imageTools">Image Tools</a>
+  <a href="#premium" data-t="premium">Premium</a>
+  <select id="language" aria-label="Language">
+   <option value="en">English</option><option value="hi">हिन्दी</option>
+   <option value="es">Español</option><option value="fr">Français</option>
+   <option value="de">Deutsch</option><option value="pt">Português</option>
+   <option value="ar">العربية</option><option value="zh">中文</option>
+   <option value="ja">日本語</option><option value="bn">বাংলা</option>
+  </select>
+  <button id="themeBtn" type="button">🌙</button>
+ </nav>
+</header>
+
+<main id="home">
+<section class="hero">
+ <span class="tag">SMART • SIMPLE • SECURE</span>
+ <h1 id="heroTitle">All Your PDF Needs. One Place.</h1>
+ <p id="heroDesc">Powerful PDF and image tools to manage your documents easily.</p>
+ <div class="search">
+  <input id="toolSearch" type="text" placeholder="Search PDF or Image Tools...">
+  <button onclick="searchTools()" data-t="search">Search</button>
+ </div>
+</section>
+
+<section class="section" id="pdf-tools">
+ <h2 data-t="pdfTools">PDF Tools</h2>
+ <p data-t="pdfDesc">Manage your PDF files with simple online tools.</p>
+ <div class="filters">
+  <button class="filter active" onclick="filterTools('all',this)" data-t="all">All Tools</button>
+  <button class="filter" onclick="filterTools('pdf',this)" data-t="pdfTools">PDF Tools</button>
+  <button class="filter" onclick="filterTools('image',this)" data-t="imageTools">Image Tools</button>
+  <button class="filter" onclick="filterTools('premium',this)" data-t="premium">Premium</button>
+ </div>
+ <div class="tools" id="toolGrid">
+  <div class="tool" data-category="pdf" onclick="openTool('mergePanel')"><div class="emoji">📑</div><h3 data-t="merge">Merge PDF</h3><small>Combine PDF files</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('splitPanel')"><div class="emoji">✂️</div><h3 data-t="split">Split PDF</h3><small>Separate pages</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('compressPanel')"><div class="emoji">📦</div><h3 data-t="compress">Compress PDF</h3><small>Reduce file size</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('pdfJpgPanel')"><div class="emoji">🖼️</div><h3 data-t="pdfJpg">PDF to JPG</h3><small>Convert pages to images</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('jpgPdfPanel')"><div class="emoji">📷</div><h3 data-t="jpgPdf">JPG to PDF</h3><small>Create PDF from images</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('rotatePanel')"><div class="emoji">🔄</div><h3 data-t="rotate">Rotate PDF</h3><small>Rotate PDF pages</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('deletePanel')"><div class="emoji">🗑️</div><h3 data-t="delete">Delete Pages</h3><small>Remove selected pages</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('extractPanel')"><div class="emoji">📤</div><h3 data-t="extract">Extract Pages</h3><small>Save selected pages</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('rearrangePanel')"><div class="emoji">🔀</div><h3 data-t="rearrange">Rearrange Pages</h3><small>Change page order</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('numbersPanel')"><div class="emoji">🔢</div><h3 data-t="numbers">Page Numbers</h3><small>Add page numbers</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('watermarkPanel')"><div class="emoji">💧</div><h3 data-t="watermark">Watermark</h3><small>Add text watermark</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('protectPanel')"><div class="emoji">🔒</div><h3>Protect PDF</h3><small class="soon">Coming Soon</small></div>
+  <div class="tool" data-category="pdf" onclick="openTool('unlockPanel')"><div class="emoji">🔓</div><h3>Unlock PDF</h3><small class="soon">Coming Soon</small></div>
+  <div class="tool" data-category="premium" onclick="toast('Premium tools are coming soon.')"><div class="emoji">✨</div><h3>Premium Tools</h3><small class="soon">Coming Soon</small></div>
+ </div>
+</section>
+
+<section class="section" id="image-tools">
+ <h2 data-t="imageTools">Image Tools</h2><p>Resize and compress your images in your browser.</p>
+ <div class="tools">
+  <div class="tool" data-category="image" onclick="openTool('resizePanel')"><div class="emoji">📐</div><h3 data-t="resize">Image Resize</h3><small>Change image dimensions</small></div>
+  <div class="tool" data-category="image" onclick="openTool('imageCompressPanel')"><div class="emoji">🗜️</div><h3 data-t="imageCompress">Image Compress</h3><small>Reduce JPG file size</small></div>
+ </div>
+</section>
+
+<section class="section" id="premium">
+ <div class="premium">
+  <h2>Unlock More Power with PDFNest Premium</h2>
+  <p>Each Premium Tool is planned to include 2 free trial uses. Subscription and secure account features will be introduced later.</p>
+  <div class="premium-list">
+   <div class="premium-item">📄 PDF to Word / Excel / PPT — Soon</div>
+   <div class="premium-item">🔍 OCR PDF — Soon</div>
+   <div class="premium-item">✨ AI Image Enhancer — Soon</div>
+   <div class="premium-item">🚀 Image Upscaler — Soon</div>
+   <div class="premium-item">✂️ Background Remover — Soon</div>
+   <div class="premium-item">📝 Image Text Editor — Soon</div>
+   <div class="premium-item">🛠️ Advanced PDF Editor — Soon</div>
+   <div class="premium-item">📚 Batch Processing — Soon</div>
+  </div>
+  <p><strong>Payment System:</strong> Coming Soon</p>
+  <button class="primary" onclick="toast('Premium subscriptions will be available in a future update.')">Explore Premium – Coming Soon</button>
+ </div>
+</section>
+
+<!-- TOOL PANELS -->
+<section class="panel" id="mergePanel"><h2>Merge PDF</h2><p>Select two or more PDF files. Their selected order is used.</p><input type="file" id="mergeFiles" accept=".pdf,application/pdf" multiple><button class="primary" onclick="mergePDF()">Merge PDF</button><div class="status" id="mergeStatus"></div></section>
+<section class="panel" id="splitPanel"><h2>Split PDF</h2><p>Creates one PDF for each page.</p><input type="file" id="splitFile" accept=".pdf,application/pdf"><button class="primary" onclick="splitPDF()">Split PDF</button><div class="status" id="splitStatus"></div><div class="downloads" id="splitResult"></div></section>
+<section class="panel" id="compressPanel"><h2>Compress PDF</h2><p class="note">This method converts pages into images. Text will no longer be selectable and visual quality may change.</p><input type="file" id="compressFile" accept=".pdf,application/pdf"><select id="compressQuality"><option value=".75">Balanced quality</option><option value=".55">Smaller file</option><option value=".9">Higher quality</option></select><button class="primary" onclick="compressPDF()">Compress PDF</button><div class="status" id="compressStatus"></div></section>
+<section class="panel" id="pdfJpgPanel"><h2>PDF to JPG</h2><input type="file" id="pdfJpgFile" accept=".pdf,application/pdf"><button class="primary" onclick="pdfToJpg()">Convert to JPG</button><div class="status" id="pdfJpgStatus"></div><div class="downloads" id="pdfJpgResult"></div></section>
+<section class="panel" id="jpgPdfPanel"><h2>JPG to PDF</h2><input type="file" id="jpgPdfFiles" accept="image/jpeg,image/png,.jpg,.jpeg,.png" multiple><button class="primary" onclick="jpgToPdf()">Create PDF</button><div class="status" id="jpgPdfStatus"></div></section>
+<section class="panel" id="rotatePanel"><h2>Rotate PDF</h2><input type="file" id="rotateFile" accept=".pdf,application/pdf"><select id="rotateAngle"><option value="90">90° clockwise</option><option value="180">180°</option><option value="270">270° clockwise</option></select><button class="primary" onclick="rotatePDF()">Rotate PDF</button><div class="status" id="rotateStatus"></div></section>
+<section class="panel" id="deletePanel"><h2>Delete PDF Pages</h2><input type="file" id="deleteFile" accept=".pdf,application/pdf"><input type="text" id="deleteNumbers" placeholder="Pages to delete, e.g. 2,4"><button class="primary" onclick="deletePages()">Delete Pages</button><div class="status" id="deleteStatus"></div></section>
+<section class="panel" id="extractPanel"><h2>Extract PDF Pages</h2><input type="file" id="extractFile" accept=".pdf,application/pdf"><input type="text" id="extractNumbers" placeholder="Pages to keep, e.g. 1,3,5"><button class="primary" onclick="extractPages()">Extract Pages</button><div class="status" id="extractStatus"></div></section>
+<section class="panel" id="rearrangePanel"><h2>Rearrange PDF Pages</h2><input type="file" id="rearrangeFile" accept=".pdf,application/pdf"><input type="text" id="rearrangeNumbers" placeholder="New order, e.g. 3,1,2"><button class="primary" onclick="rearrangePages()">Rearrange Pages</button><div class="status" id="rearrangeStatus"></div></section>
+<section class="panel" id="numbersPanel"><h2>Add Page Numbers</h2><input type="file" id="numbersFile" accept=".pdf,application/pdf"><button class="primary" onclick="addPageNumbers()">Add Page Numbers</button><div class="status" id="numbersStatus"></div></section>
+<section class="panel" id="watermarkPanel"><h2>Add Watermark</h2><input type="file" id="watermarkFile" accept=".pdf,application/pdf"><input type="text" id="watermarkText" placeholder="Enter watermark text"><button class="primary" onclick="addWatermark()">Add Watermark</button><div class="status" id="watermarkStatus"></div></section>
+<section class="panel" id="protectPanel"><h2>Protect PDF</h2><p>This feature is not active yet.</p><b class="soon">Coming Soon</b></section>
+<section class="panel" id="unlockPanel"><h2>Unlock PDF</h2><p>Only unlock files you are authorized to access. This feature is not active yet.</p><b class="soon">Coming Soon</b></section>
+<section class="panel" id="resizePanel"><h2>Image Resize</h2><input type="file" id="resizeFile" accept="image/*"><input type="number" id="resizeWidth" placeholder="New width in pixels" min="1"><input type="number" id="resizeHeight" placeholder="New height in pixels" min="1"><button class="primary" onclick="resizeImage()">Resize Image</button><div class="status" id="resizeStatus"></div></section>
+<section class="panel" id="imageCompressPanel"><h2>Image Compress</h2><p>Compress JPG images in your browser.</p><input type="file" id="imageCompressFile" accept="image/jpeg,.jpg,.jpeg"><select id="imageQuality"><option value=".7">Balanced</option><option value=".45">Smaller file</option><option value=".88">Higher quality</option></select><button class="primary" onclick="compressImage()">Compress Image</button><div class="status" id="imageCompressStatus"></div></section>
+</main>
+
+<footer>
+ <div class="logo">📄 PDF<span>Nest</span></div>
+ <p>Simple PDF and Image tools for everyone.</p>
+ <p>Contact: nepalibhai2032@gmail.com</p>
+ <p>© 2026 PDFNest. All rights reserved.</p>
+ <p class="note">Files are processed in your browser for supported tools. Keep a backup of important documents.</p>
+</footer>
+<div id="toast"></div>
+
+<script>
+if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";}
+const $=id=>document.getElementById(id);
+function toast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",3000);}
+function status(id,msg){$(id).textContent=msg;}
+function openTool(id){
+ document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+ const panel=$(id);
+ if(!panel){toast("This tool is not available.");return;}
+ panel.classList.add("active");
+ panel.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function filterTools(category,btn){
+ document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+ document.querySelectorAll("#toolGrid .tool").forEach(t=>{
+ t.style.display=(category==="all"||t.dataset.category===category)?"":"none";
+ });
+ document.querySelectorAll("#image-tools .tool").forEach(t=>{
+ t.style.display=(category==="all"||category==="image")?"":"none";
+ });
+}
+function searchTools(){
+ const q=$("toolSearch").value.toLowerCase().trim();
+ let count=0;
+ document.querySelectorAll(".tool").forEach(t=>{
+ const show=!q||t.innerText.toLowerCase().includes(q);
+ t.style.display=show?"":"none";
+ if(show)count++;
+ });
+ $("pdf-tools").scrollIntoView({behavior:"smooth"});
+ if(!count)toast("No matching tools found.");
+}
+$("toolSearch").addEventListener("keydown",e=>{if(e.key==="Enter")searchTools();});
+$("themeBtn").addEventListener("click",()=>{
+ document.body.classList.toggle("dark");
+ $("themeBtn").textContent=document.body.classList.contains("dark")?"☀️":"🌙";
+});
+const translations={
+ en:{home:"Home",pdfTools:"PDF Tools",imageTools:"Image Tools",premium:"Premium",search:"Search",all:"All Tools",pdfDesc:"Manage your PDF files with simple online tools.",merge:"Merge PDF",split:"Split PDF",compress:"Compress PDF",pdfJpg:"PDF to JPG",jpgPdf:"JPG to PDF",rotate:"Rotate PDF",delete:"Delete Pages",extract:"Extract Pages",rearrange:"Rearrange Pages",numbers:"Page Numbers",watermark:"Watermark",resize:"Image Resize",imageCompress:"Image Compress",title:"All Your PDF Needs. One Place.",desc:"Powerful PDF and image tools to manage your documents easily."},
+ hi:{home:"होम",pdfTools:"PDF टूल्स",imageTools:"इमेज टूल्स",premium:"प्रीमियम",search:"खोजें",all:"सभी टूल्स",pdfDesc:"अपने PDF को आसानी से मैनेज करें।",merge:"PDF जोड़ें",split:"PDF बाँटें",compress:"PDF छोटा करें",pdfJpg:"PDF से JPG",jpgPdf:"JPG से PDF",rotate:"PDF घुमाएँ",delete:"पेज हटाएँ",extract:"पेज निकालें",rearrange:"पेज क्रम बदलें",numbers:"पेज नंबर",watermark:"वॉटरमार्क",resize:"इमेज का आकार",imageCompress:"इमेज छोटा करें",title:"आपके सभी PDF टूल्स एक जगह",desc:"अपने PDF और इमेज को आसानी से मैनेज करें।"},
+ es:{home:"Inicio",pdfTools:"Herramientas PDF",imageTools:"Herramientas de imagen",premium:"Premium",search:"Buscar",all:"Todas",merge:"Unir PDF",split:"Dividir PDF",compress:"Comprimir PDF",pdfJpg:"PDF a JPG",jpgPdf:"JPG a PDF",rotate:"Girar PDF",delete:"Eliminar páginas",extract:"Extraer páginas",rearrange:"Reordenar páginas",numbers:"Números de página",watermark:"Marca de agua",resize:"Cambiar tamaño",imageCompress:"Comprimir imagen",title:"Todas tus herramientas PDF en un lugar",desc:"Administra tus documentos fácilmente.",pdfDesc:"Administra tus archivos PDF."},
+ fr:{home:"Accueil",pdfTools:"Outils PDF",imageTools:"Outils image",premium:"Premium",search:"Rechercher",all:"Tous",merge:"Fusionner PDF",split:"Diviser PDF",compress:"Compresser PDF",pdfJpg:"PDF en JPG",jpgPdf:"JPG en PDF",rotate:"Pivoter PDF",delete:"Supprimer pages",extract:"Extraire pages",rearrange:"Réorganiser pages",numbers:"Numéros de page",watermark:"Filigrane",resize:"Redimensionner",imageCompress:"Compresser image",title:"Tous vos outils PDF au même endroit",desc:"Gérez vos documents facilement.",pdfDesc:"Gérez vos fichiers PDF."},
+ de:{home:"Startseite",pdfTools:"PDF-Werkzeuge",imageTools:"Bildwerkzeuge",premium:"Premium",search:"Suchen",all:"Alle",merge:"PDF zusammenführen",split:"PDF teilen",compress:"PDF komprimieren",pdfJpg:"PDF zu JPG",jpgPdf:"JPG zu PDF",rotate:"PDF drehen",delete:"Seiten löschen",extract:"Seiten extrahieren",rearrange:"Seiten sortieren",numbers:"Seitennummern",watermark:"Wasserzeichen",resize:"Bildgröße ändern",imageCompress:"Bild komprimieren",title:"Alle PDF-Werkzeuge an einem Ort",desc:"Verwalten Sie Ihre Dokumente einfach.",pdfDesc:"Verwalten Sie Ihre PDF-Dateien."},
+ pt:{home:"Início",pdfTools:"Ferramentas PDF",imageTools:"Ferramentas de imagem",premium:"Premium",search:"Pesquisar",all:"Todas",merge:"Juntar PDF",split:"Dividir PDF",compress:"Comprimir PDF",pdfJpg:"PDF para JPG",jpgPdf:"JPG para PDF",rotate:"Girar PDF",delete:"Excluir páginas",extract:"Extrair páginas",rearrange:"Reordenar páginas",numbers:"Números de página",watermark:"Marca d'água",resize:"Redimensionar imagem",imageCompress:"Comprimir imagem",title:"Todas as ferramentas PDF em um só lugar",desc:"Gerencie seus documentos facilmente.",pdfDesc:"Gerencie seus arquivos PDF."},
+ ar:{home:"الرئيسية",pdfTools:"أدوات PDF",imageTools:"أدوات الصور",premium:"مميز",search:"بحث",all:"الكل",merge:"دمج PDF",split:"تقسيم PDF",compress:"ضغط PDF",pdfJpg:"PDF إلى JPG",jpgPdf:"JPG إلى PDF",rotate:"تدوير PDF",delete:"حذف الصفحات",extract:"استخراج الصفحات",rearrange:"ترتيب الصفحات",numbers:"أرقام الصفحات",watermark:"علامة مائية",resize:"تغيير حجم الصورة",imageCompress:"ضغط الصورة",title:"كل أدوات PDF في مكان واحد",desc:"أدر مستنداتك بسهولة.",pdfDesc:"أدر ملفات PDF بسهولة."},
+ zh:{home:"首页",pdfTools:"PDF工具",imageTools:"图像工具",premium:"高级版",search:"搜索",all:"全部工具",merge:"合并PDF",split:"拆分PDF",compress:"压缩PDF",pdfJpg:"PDF转JPG",jpgPdf:"JPG转PDF",rotate:"旋转PDF",delete:"删除页面",extract:"提取页面",rearrange:"重新排序",numbers:"页码",watermark:"水印",resize:"调整图像大小",imageCompress:"压缩图像",title:"所有PDF工具尽在一处",desc:"轻松管理您的文档。",pdfDesc:"轻松管理您的PDF文件。"},
+ ja:{home:"ホーム",pdfTools:"PDFツール",imageTools:"画像ツール",premium:"プレミアム",search:"検索",all:"すべて",merge:"PDFを結合",split:"PDFを分割",compress:"PDFを圧縮",pdfJpg:"PDFからJPG",jpgPdf:"JPGからPDF",rotate:"PDFを回転",delete:"ページを削除",extract:"ページを抽出",rearrange:"ページを並べ替え",numbers:"ページ番号",watermark:"透かし",resize:"画像サイズ変更",imageCompress:"画像圧縮",title:"すべてのPDFツールを一か所に",desc:"書類を簡単に管理できます。",pdfDesc:"PDFファイルを簡単に管理。"},
+ bn:{home:"হোম",pdfTools:"PDF টুল",imageTools:"ছবি টুল",premium:"প্রিমিয়াম",search:"খুঁজুন",all:"সব টুল",merge:"PDF একত্র করুন",split:"PDF ভাগ করুন",compress:"PDF সংকুচিত করুন",pdfJpg:"PDF থেকে JPG",jpgPdf:"JPG থেকে PDF",rotate:"PDF ঘোরান",delete:"পৃষ্ঠা মুছুন",extract:"পৃষ্ঠা বের করুন",rearrange:"পৃষ্ঠা সাজান",numbers:"পৃষ্ঠা নম্বর",watermark:"ওয়াটারমার্ক",resize:"ছবির আকার",imageCompress:"ছবি সংকুচিত করুন",title:"সব PDF টুল এক জায়গায়",desc:"সহজে আপনার নথি পরিচালনা করুন।",pdfDesc:"সহজে PDF ফাইল পরিচালনা করুন।"}
+};
+$("language").addEventListener("change",function(){
+ const lang=translations[this.value]||translations.en;
+ document.documentElement.lang=this.value;
+ document.querySelectorAll("[data-t]").forEach(el=>{
+ const key=el.dataset.t;if(lang[key])el.textContent=lang[key];
+ });
+ $("heroTitle").textContent=lang.title||translations.en.title;
+ $("heroDesc").textContent=lang.desc||translations.en.desc;
+ if(this.value==="ar")document.body.dir="rtl";else document.body.dir="ltr";
+});
+function getFile(id){const f=$(id).files[0];if(!f)throw Error("Please select a file first.");return f;}
+function getFiles(id){const f=[...$(id).files];if(!f.length)throw Error("Please select file(s) first.");return f;}
+function downloadBytes(bytes,name,type="application/pdf"){
+ const blob=new Blob([bytes],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+}
+function downloadLink(blob,name,container){
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download=name;a.textContent="⬇ Download "+name;
+ $(container).appendChild(a);
+}
+function parsePages(text,total){
+ const arr=text.split(",").map(x=>Number(x.trim()));
+ if(!arr.length||arr.some(n=>!Number.isInteger(n)||n<1||n>total))throw Error("Enter valid page numbers between 1 and "+total+".");
+ return arr.map(n=>n-1);
+}
+async function loadPdf(file){return await PDFLib.PDFDocument.load(await file.arrayBuffer());}
+async function runTool(statusId,fn){
+ try{status(statusId,"⏳ Processing...");await fn();}
+ catch(e){console.error(e);status(statusId,"❌ "+(e.message||"Something went wrong."));}
+}
+async function mergePDF(){runTool("mergeStatus",async()=>{
+ const files=getFiles("mergeFiles");if(files.length<2)throw Error("Select at least two PDF files.");
+ const out=await PDFLib.PDFDocument.create();
+ for(const f of files){const doc=await loadPdf(f);const pages=await out.copyPages(doc,doc.getPageIndices());pages.forEach(p=>out.addPage(p));}
+ downloadBytes(await out.save(),"PDFNest-Merged.pdf");status("mergeStatus","✅ PDF files merged successfully.");
+});}
+async function splitPDF(){runTool("splitStatus",async()=>{
+ const doc=await loadPdf(getFile("splitFile")),result=$("splitResult");result.innerHTML="";
+ for(let i=0;i<doc.getPageCount();i++){const out=await PDFLib.PDFDocument.create();const [p]=await out.copyPages(doc,[i]);out.addPage(p);downloadLink(new Blob([await out.save()],{type:"application/pdf"}),"page-"+(i+1)+".pdf","splitResult");}
+ status("splitStatus","✅ Created "+doc.getPageCount()+" separate PDF files. Use the download links below.");
+});}
+async function rotatePDF(){runTool("rotateStatus",async()=>{
+ const doc=await loadPdf(getFile("rotateFile")),angle=Number($("rotateAngle").value);
+ doc.getPages().forEach(p=>p.setRotation(PDFLib.degrees((p.getRotation().angle+angle)%360)));
+ downloadBytes(await doc.save(),"PDFNest-Rotated.pdf");status("rotateStatus","✅ PDF rotated successfully.");
+});}
+async function deletePages(){runTool("deleteStatus",async()=>{
+ const doc=await loadPdf(getFile("deleteFile")),ids=[...new Set(parsePages($("deleteNumbers").value,doc.getPageCount()))].sort((a,b)=>b-a);
+ if(ids.length>=doc.getPageCount())throw Error("You cannot delete every page.");
+ ids.forEach(i=>doc.removePage(i));downloadBytes(await doc.save(),"PDFNest-Edited.pdf");status("deleteStatus","✅ Selected pages deleted.");
+});}
+async function extractPages(){runTool("extractStatus",async()=>{
+ const doc=await loadPdf(getFile("extractFile")),ids=parsePages($("extractNumbers").value,doc.getPageCount()),out=await PDFLib.PDFDocument.create();
+ const pages=await out.copyPages(doc,ids);pages.forEach(p=>out.addPage(p));downloadBytes(await out.save(),"PDFNest-Extracted.pdf");status("extractStatus","✅ Pages extracted.");
+});}
+async function rearrangePages(){runTool("rearrangeStatus",async()=>{
+ const doc=await loadPdf(getFile("rearrangeFile")),ids=parsePages($("rearrangeNumbers").value,doc.getPageCount());
+ if(ids.length!==doc.getPageCount()||new Set(ids).size!==doc.getPageCount())throw Error("Enter every page number exactly once.");
+ const out=await PDFLib.PDFDocument.create(),pages=await out.copyPages(doc,ids);pages.forEach(p=>out.addPage(p));
+ downloadBytes(await out.save(),"PDFNest-Rearranged.pdf");status("rearrangeStatus","✅ Page order changed.");
+});}
+async function addPageNumbers(){runTool("numbersStatus",async()=>{
+ const doc=await loadPdf(getFile("numbersFile"));
+ doc.getPages().forEach((p,i)=>{const s=p.getSize();p.drawText(String(i+1),{x:s.width/2-8,y:20,size:12,color:PDFLib.rgb(.35,.2,.6)});});
+ downloadBytes(await doc.save(),"PDFNest-Numbered.pdf");status("numbersStatus","✅ Page numbers added.");
+});}
+async function addWatermark(){runTool("watermarkStatus",async()=>{
+ const doc=await loadPdf(getFile("watermarkFile")),txt=$("watermarkText").value.trim();if(!txt)throw Error("Enter watermark text.");
+ doc.getPages().forEach(p=>{const s=p.getSize();p.drawText(txt,{x:s.width*.2,y:s.height*.5,size:30,color:PDFLib.rgb(.65,.6,.75),opacity:.35,rotate:PDFLib.degrees(35)});});
+ downloadBytes(await doc.save(),"PDFNest-Watermarked.pdf");status("watermarkStatus","✅ Watermark added.");
+});}
+async function getRenderedPages(file,quality,callback){
+ if(!window.pdfjsLib)throw Error("PDF rendering library did not load. Check your internet connection.");
+ const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+ for(let i=1;i<=pdf.numPages;i++){
+ const page=await pdf.getPage(i),viewport=page.getViewport({scale:1.5}),canvas=document.createElement("canvas");
+ canvas.width=viewport.width;canvas.height=viewport.height;
+ await page.render({canvasContext:canvas.getContext("2d"),viewport}).promise;
+ await callback(canvas,i,pdf.numPages);
+ }
+}
+async function pdfToJpg(){runTool("pdfJpgStatus",async()=>{
+ const file=getFile("pdfJpgFile"),result=$("pdfJpgResult");result.innerHTML="";
+ await getRenderedPages(file,.85,async(canvas,i)=>{const blob=await new Promise(r=>canvas.toBlob(r,"image/jpeg",.85));downloadLink(blob,"page-"+i+".jpg","pdfJpgResult");});
+ status("pdfJpgStatus","✅ Conversion complete. Download your JPG pages below.");
+});}
+async function compressPDF(){runTool("compressStatus",async()=>{
+ const file=getFile("compressFile"),quality=Number($("compressQuality").value),out=await PDFLib.PDFDocument.create();
+ await getRenderedPages(file,quality,async(canvas)=>{
+ const jpg=await new Promise(r=>canvas.toBlob(r,"image/jpeg",quality));
+ const img=await out.embedJpg(await jpg.arrayBuffer()),page=out.addPage([img.width,img.height]);page.drawImage(img,{x:0,y:0,width:img.width,height:img.height});
+ });
+ downloadBytes(await out.save(),"PDFNest-Compressed.pdf");status("compressStatus","✅ Compressed PDF created. Note: pages are images, not selectable text.");
+});}
+async function jpgToPdf(){runTool("jpgPdfStatus",async()=>{
+ const files=getFiles("jpgPdfFiles"),out=await PDFLib.PDFDocument.create();
+ for(const f of files){const b=await f.arrayBuffer();let img;
+ if(f.type==="image/png"||/\.png$/i.test(f.name))img=await out.embedPng(b);else img=await out.embedJpg(b);
+ const page=out.addPage([img.width,img.height]);page.drawImage(img,{x:0,y:0,width:img.width,height:img.height});
+ }
+ downloadBytes(await out.save(),"PDFNest-Images.pdf");status("jpgPdfStatus","✅ PDF created from images.");
+});}
+function loadImage(file){return new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};img.onerror=()=>reject(Error("Could not open image."));img.src=url;});}
+async function resizeImage(){runTool("resizeStatus",async()=>{
+ const file=getFile("resizeFile"),img=await loadImage(file),w=Number($("resizeWidth").value),h=Number($("resizeHeight").value);
+ if(!w||!h||w<1||h<1||w>10000||h>10000)throw Error("Enter valid width and height (1–10000).");
+ const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);
+ const blob=await new Promise(r=>c.toBlob(r,"image/png"));downloadBytes(await blob.arrayBuffer(),"PDFNest-Resized.png","image/png");status("resizeStatus","✅ Image resized.");
+});}
+async function compressImage(){runTool("imageCompressStatus",async()=>{
+ const file=getFile("imageCompressFile"),img=await loadImage(file),q=Number($("imageQuality").value);
+ const c=document.createElement("canvas");c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext("2d").drawImage(img,0,0);
+ const blob=await new Promise(r=>c.toBlob(r,"image/jpeg",q));downloadBytes(await blob.arrayBuffer(),"PDFNest-Compressed.jpg","image/jpeg");status("imageCompressStatus","✅ Image compressed.");
+});}
+</script>
+</body>
+</html>
