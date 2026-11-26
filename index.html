@@ -164,15 +164,28 @@ footer a{color:#d8bfff;margin:7px;display:inline-block}
 <section class="panel" id="resizePanel"><h2>Image Resize</h2><input type="file" id="resizeFile" accept="image/*"><input type="number" id="resizeWidth" placeholder="New width in pixels" min="1"><input type="number" id="resizeHeight" placeholder="New height in pixels" min="1"><button class="primary" onclick="resizeImage()">Resize Image</button><div class="status" id="resizeStatus"></div></section>
 <section class="panel" id="imageCompressPanel"><h2>Image Compress</h2><p>Compress JPG images in your browser.</p><input type="file" id="imageCompressFile" accept="image/jpeg,.jpg,.jpeg"><select id="imageQuality"><option value=".7">Balanced</option><option value=".45">Smaller file</option><option value=".88">Higher quality</option></select><button class="primary" onclick="compressImage()">Compress Image</button><div class="status" id="imageCompressStatus"></div></section>
 </main>
-
 <footer>
  <div class="logo">📄 PDF<span>Nest</span></div>
+
  <p>Simple PDF and Image tools for everyone.</p>
+
  <p>© 2026 PDFNest. All rights reserved.</p>
-<p>
+
+ <div>
   <a href="privacy-policy.html">Privacy Policy</a>
-</p>
- <p class="note">Files are processed in your browser for supported tools. Keep a backup of important documents.</p>
+  <a href="terms.html">Terms &amp; Conditions</a>
+  <a href="#contact">Contact Us</a>
+ </div>
+
+ <div id="contact">
+  <p>Contact Us</p>
+  <p>Support information will be available soon.</p>
+ </div>
+
+ <p class="note">
+  Files are processed in your browser for supported tools.
+  Keep a backup of important documents.
+ </p>
 </footer>
 <div id="toast"></div>
 
