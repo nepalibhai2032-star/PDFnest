@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "pdfnest-cache-v2";
+const CACHE_NAME = "PDFNest-cache-v2";
 
 const BASE_URL = new URL("./", self.location.href);
 
@@ -26,7 +26,7 @@ self.addEventListener("activate", event => {
       Promise.all(
         keys
           .filter(key =>
-            key.startsWith("pdfnest-cache-") &&
+            key.startsWith("PDFNest-cache-") &&
             key !== CACHE_NAME
           )
           .map(key => caches.delete(key))
